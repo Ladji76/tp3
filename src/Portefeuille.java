@@ -19,14 +19,20 @@ public class Portefeuille {
    * @return Vrai si la transaction a été effectuée, faux sinon.  
    */
   public boolean transfertDevise (Portefeuille destination, double montantJetons)
-  {
-    if (!this.monnaie.equals(destination.getMonnaie())) { return false ; }
+{
+	if(this.montant < montantJetons){return false;}
+	if(!this.monnaie.equals(destination.getMonnaie())){return false;}
+	
+	destination.setMontant(destination.getMontant() + montantJetons);
+	this.montant -= montantJetons;
 
-    //verifie si le montant du portefeuille est suffisant
-    if (this.montant < montantJetons) { return false; }
-      return true;
-  }
+	return true;
+}
 
+public void setMontant(double montant)
+{
+	this.montant = montant;
+}
   /**
    * Cette fonction vous permet d'acheter des jetons de la 
    * crypto-devise en fonction de leur valeur en euros. 
@@ -36,15 +42,15 @@ public class Portefeuille {
    */
   public boolean achatDevise (double montantEuros)
   {
-	if (montantEuros >= 0) {
-        return true;
+	if (montantEuros < 0) {
+        return false;
     }
-    
+
     double nombreJetons = montantEuros / monnaie.getValeurDeJeton();
 
     this.montant += nombreJetons;
 
-    return false;
+    return true;
   }
 
   /**
